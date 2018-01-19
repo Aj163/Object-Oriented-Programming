@@ -9,16 +9,17 @@ class perceptron
 	double eta, bias;
 	double w1, w2;
 
-	int d(bool a, bool b, int ans)
+	int d(bool a, bool b, int ans) //Gives error
 	{
 		if(logical_and(a, b) > ans)
-			return -1;
-		return 1;
+			return -1; //Weights and bias will be decreased
+		return 1; //Weights and bias will be increased
 	}
 
 public:
 	perceptron()
 	{
+		//Random Values - Can be replaced by rand()
 		w1 = 39.0;
 		w2 = 52.0;
 		bias = 100.0;
@@ -33,6 +34,7 @@ public:
 
 	int logical_and(bool a, bool b)
 	{
+		//Activation
 		return (a*w1 + b*w2 + bias >= 0.0)?1:-1;
 	}
 
@@ -45,9 +47,9 @@ public:
 			return 1;
 		}
 
-		bias += eta*eta*d(a, b, ans);
-		w1 += eta*a*d(a, b, ans);
-		w2 += eta*b*d(a, b, ans);
+		bias += eta*eta*d(a, b, ans); //Learn at rate : eta^2
+		w1 += eta*a*d(a, b, ans); //Learn at rate : eta
+		w2 += eta*b*d(a, b, ans); //Learn at rate : eta
 
 		//cout<<"New weights : w1 = "<<w1<<", w2 = "<<w2<<", b = "<<bias<<endl;
 		return 0;
@@ -60,6 +62,7 @@ int main()
 	bool a, b, o;
 	while(flag)
 	{
+		//Train
 		flag = 0;
 		if(per.train(0, 0, 0) == 0)
 			flag = 1;
@@ -73,6 +76,7 @@ int main()
 
 	per.print();
 
+	//Test
 	cout<<(per.logical_and(0, 0) == 1?1:0)<<endl;
 	cout<<(per.logical_and(0, 1) == 1?1:0)<<endl;
 	cout<<(per.logical_and(1, 0) == 1?1:0)<<endl;
